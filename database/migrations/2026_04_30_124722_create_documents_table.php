@@ -16,6 +16,7 @@ return new class extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->foreignIdFor(User::class);
             $table->foreignIdFor(Folder::class);
             $table->string('name');
             $table->string('path');
