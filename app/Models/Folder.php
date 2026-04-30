@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
-#[Fillable('name', 'slug', 'user_id')]
+#[Fillable('name', 'user_id')]
 class Folder extends Model
 {
     protected static function booted()
