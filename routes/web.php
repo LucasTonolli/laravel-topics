@@ -19,5 +19,5 @@ Route::get('/config-user', function () {
 });
 
 Route::resource('folders', FolderController::class)->middlewareFor('store', EnsureFolderLimit::class);
-Route::resource('folders/{folder}/documents', DocumentController::class);
+Route::resource('folders.documents', DocumentController::class);
 Route::post('folders/{folder}/documents/{document}/share', [DocumentController::class, 'share']);
