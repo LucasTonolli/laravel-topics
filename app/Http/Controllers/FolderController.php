@@ -43,12 +43,12 @@ class FolderController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id) {}
+    public function edit(Folder $folder) {}
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateFolderRequest $request, string $id)
+    public function update(UpdateFolderRequest $request, Folder $folder)
     {
         //
     }
@@ -56,7 +56,7 @@ class FolderController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Folder $folder)
     {
         //
     }
