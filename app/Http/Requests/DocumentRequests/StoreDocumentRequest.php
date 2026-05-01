@@ -12,7 +12,7 @@ class StoreDocumentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()->folders()->where('id', $this->folder_id)->exists();
+        return $this->route('folder')->user_id === $this->user()->id;
     }
 
     /**
@@ -26,7 +26,6 @@ class StoreDocumentRequest extends FormRequest
         $maxSize = config('docvault.max_upload_size');
 
         return [
-            'folder_id' => ['required', 'exists:folders,id'],
             'name' => ['required', 'string', 'max:255'],
             'document' => ['required', 'file', 'mimes:' . $mimeTypes, 'max:' . $maxSize * 1024],
         ];
