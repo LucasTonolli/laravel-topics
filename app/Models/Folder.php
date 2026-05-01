@@ -33,4 +33,9 @@ class Folder extends Model
     {
         return $this->hasMany(Document::class);
     }
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 }
