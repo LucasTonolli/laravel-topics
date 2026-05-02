@@ -56,7 +56,7 @@ class FolderController extends Controller
      */
     public function show(Folder $folder)
     {
-        return view('folders.show', compact('folder'));
+        return view('folders.show', ['folder' => $folder]);
     }
 
     /**
@@ -64,7 +64,7 @@ class FolderController extends Controller
      */
     public function edit(Folder $folder)
     {
-        return view('folders.edit', compact('folder'));
+        return view('folders.edit', ['folder' => $folder]);
     }
 
     /**
@@ -72,7 +72,13 @@ class FolderController extends Controller
      */
     public function update(UpdateFolderRequest $request, Folder $folder)
     {
-        //
+        $validated = $request->validated();
+
+        $folder->update([
+            'name' => $validated['name'],
+        ]);
+
+        return redirect()->route('folders.show', ['folder' => $folder]);
     }
 
     /**

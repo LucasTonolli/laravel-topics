@@ -1,14 +1,10 @@
 <div>
-    <!-- The best way to take care of the future is to take care of the present moment. - Thich Nhat Hanh -->
-</div>@csrf
-
-<div>
     <label for="name" class="block text-sm font-medium text-zinc-700">Nome da pasta</label>
     <input
         id="name"
         type="text"
         name="name"
-        value="{{ old('name', $folder->name ?? '') }}"
+        value="{{ $folder?->name ?? old('name') }}"
         required
         maxlength="255"
         autocomplete="off"
