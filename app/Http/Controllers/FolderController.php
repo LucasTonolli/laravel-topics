@@ -5,9 +5,16 @@ namespace App\Http\Controllers;
 use App\Http\Requests\FolderRequests\StoreFolderRequest;
 use App\Http\Requests\FolderRequests\UpdateFolderRequest;
 use App\Models\Folder;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Routing\Controller;
 
 class FolderController extends Controller
 {
+    use AuthorizesRequests;
+    public function __construct()
+    {
+        $this->authorizeResource(Folder::class, 'folder');
+    }
     /**
      * Display a listing of the resource.
      */
