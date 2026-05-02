@@ -6,7 +6,9 @@ use App\Http\Requests\FolderRequests\StoreFolderRequest;
 use App\Http\Requests\FolderRequests\UpdateFolderRequest;
 use App\Models\Folder;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 
 class FolderController extends Controller
 {
@@ -18,17 +20,20 @@ class FolderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request): View
     {
-        //
+
+        return view('folders.index', [
+            'folders' => $request->user()->folders()->get()
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
-        //
+        return view('folders.create');
     }
 
     /**
@@ -36,7 +41,14 @@ class FolderController extends Controller
      */
     public function store(StoreFolderRequest $request)
     {
-        //
+        $validated = $request->validated();
+
+        Folder::create([
+            'name' => $validated['name'],
+            'user_id' => $request->user()->id,
+        ]);
+
+        return redirect()->route('folders.index');
     }
 
     /**
@@ -44,13 +56,16 @@ class FolderController extends Controller
      */
     public function show(Folder $folder)
     {
-        echo print_r($folder->toArray());
+        return view('folders.show', compact('folder'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Folder $folder) {}
+    public function edit(Folder $folder)
+    {
+        return view('folders.edit', compact('folder'));
+    }
 
     /**
      * Update the specified resource in storage.
