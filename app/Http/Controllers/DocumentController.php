@@ -5,10 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DocumentRequests\ShareDocumentRequest;
 use App\Http\Requests\DocumentRequests\StoreDocumentRequest;
 use App\Models\Document;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class DocumentController extends Controller
 {
+    use AuthorizesRequests;
+    public function __construct()
+    {
+        $this->authorizeResource(Document::class, 'document');
+    }
     /**
      * Display a listing of the resource.
      */
@@ -65,8 +72,6 @@ class DocumentController extends Controller
         //
     }
 
-    public function share(ShareDocumentRequest $request)
-    {
-        //
-    }
+    public function share(ShareDocumentRequest $request, Document $document) {}
+    public function download(Document $document) {}
 }
