@@ -16,7 +16,6 @@ class StoreDocumentRequest extends FormRequest
     {
         $mimeTypes = implode(',', config('docvault.allowed_file_types'));
         $maxSize = config('docvault.max_upload_size');
-
         return [
             'name' => ['required', 'string', 'max:255'],
             'document' => ['required', 'file', 'mimes:' . $mimeTypes, 'max:' . $maxSize * 1024],
