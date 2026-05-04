@@ -13,16 +13,11 @@ class DocVaultServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(
-            DocumentServiceInterface::class,
-            function ($app) {
-                return new DocumentService(
-                    maxSize: config('docvault.max_upload_size'),
-                    allowedMimeTypes: config('docvault.allowed_file_types'),
-                    disk: config('docvault.upload_disk'),
-                );
-            }
-        );
+        $this->app->singleton(DocumentServiceInterface::class, DocumentService::class);
+
+        $this->app->when(DocumentService::class)
+            ->needs('$disk') // Nome exato do parâmetro no construtor
+            ->giveConfig('docvault.upload_disk');
     }
 
     /**

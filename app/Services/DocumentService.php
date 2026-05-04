@@ -12,8 +12,6 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 class DocumentService implements DocumentServiceInterface
 {
     public function __construct(
-        private readonly int $maxSize,
-        private readonly array $allowedMimeTypes,
         private readonly string $disk,
     ) {}
 
@@ -26,6 +24,9 @@ class DocumentService implements DocumentServiceInterface
         }
 
         $document = $folder->documents()->create([
+            'user_id' => $folder->user_id,
+            'type' => $file->getClientMimeType(),
+            'size' => $file->getSize(),
             'name' => $file->getClientOriginalName(),
             'path' => $path,
         ]);
