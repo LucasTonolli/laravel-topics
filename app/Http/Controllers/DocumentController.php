@@ -10,6 +10,7 @@ use App\Services\DocumentService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class DocumentController extends Controller
@@ -68,9 +69,9 @@ class DocumentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Document $document)
+    public function update(Request $request, Folder $folder, Document $document)
     {
-        //
+        Log::info("Updating document with id: {$document}");
     }
 
     /**
