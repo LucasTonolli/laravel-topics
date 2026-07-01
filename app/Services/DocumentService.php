@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Contracts\DocumentServiceInterface;
+use App\Events\DocumentUploaded;
 use App\Models\Document;
 use App\Models\Folder;
 use Illuminate\Http\UploadedFile;
@@ -31,7 +32,13 @@ class DocumentService implements DocumentServiceInterface
             'path' => $path,
         ]);
 
-        return $document->exists();
+        if (!$document->exists()) {
+            return false;
+        }
+
+        DocumentUploaded::dispatch($document, $folder->user);
+
+        return true;
     }
 
     public function delete(Document $document): bool
