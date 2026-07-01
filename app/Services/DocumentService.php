@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Contracts\DocumentServiceInterface;
 use App\Events\DocumentUploaded;
+use App\Jobs\ProcessDocumentMetadata;
 use App\Models\Document;
 use App\Models\Folder;
 use Illuminate\Http\UploadedFile;
@@ -37,7 +38,7 @@ class DocumentService implements DocumentServiceInterface
         }
 
         DocumentUploaded::dispatch($document, $folder->user);
-
+        ProcessDocumentMetadata::dispatch($document);
         return true;
     }
 
