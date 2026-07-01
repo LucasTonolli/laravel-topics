@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\DocumentShared;
 use App\Http\Requests\DocumentRequests\ShareDocumentRequest;
 use App\Http\Requests\DocumentRequests\StoreDocumentRequest;
 use App\Models\Document;
 use App\Models\Folder;
+use App\Models\User;
 use App\Services\DocumentService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
@@ -92,6 +94,8 @@ class DocumentController extends Controller
             'view' => $document->viewers()->attach($validated['user_id']),
             'edit' => $document->editors()->attach($validated['user_id'], ['permission' => $validated['permission']]),
         };
+
+        DocumentShared::dispatch($document, $folder->user, User::find($validated['user_id']));
 
         return redirect()->route('folders.documents.show', ['folder' => $folder, 'document' => $document]);
     }
