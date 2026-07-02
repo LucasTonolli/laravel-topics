@@ -8,6 +8,7 @@ use App\Jobs\ProcessDocumentMetadata;
 use App\Models\Document;
 use App\Models\Folder;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -19,31 +20,31 @@ class DocumentService implements DocumentServiceInterface
 
     public function upload(Folder $folder, UploadedFile $file): bool
     {
-        $path = $folder->slug . '/' . $file->getClientOriginalName();
+        return DB::transaction(function () use ($folder, $file) {
+            $uploaded = Storage::disk($this->disk)->putFileAs($folder->slug, $file, $file->getClientOriginalName());
 
-        if (!$path) {
-            return false;
-        }
+            $document = $folder->documents()->create([
+                'user_id' => $folder->user_id,
+                'type' => '',
+                'size' => 0,
+                'name' => '',
+                'path' => $uploaded,
+            ]);
 
-        $document = $folder->documents()->create([
-            'user_id' => $folder->user_id,
-            'type' => $file->getClientMimeType(),
-            'size' => $file->getSize(),
-            'name' => $file->getClientOriginalName(),
-            'path' => $path,
-        ]);
+            if (!$document->exists()) {
+                Storage::disk($this->disk)->delete($uploaded);
+                return false;
+            }
 
-        if (!$document->exists()) {
-            return false;
-        }
-
-        DocumentUploaded::dispatch($document, $folder->user);
-        ProcessDocumentMetadata::dispatch($document);
-        return true;
+            DocumentUploaded::dispatch($document, $folder->user);
+            ProcessDocumentMetadata::dispatch($document);
+            return true;
+        });
     }
 
     public function delete(Document $document): bool
     {
+        Storage::disk($this->disk)->delete($document->path);
         return $document->delete();
     }
 
