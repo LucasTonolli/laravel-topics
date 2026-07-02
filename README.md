@@ -64,7 +64,6 @@ Document ── belongsTo ── User, Folder
 
 - Driver `database` com tabela `jobs` e `failed_jobs`
 - **ProcessDocumentMetadata** — job assíncrono que lê o arquivo do storage e extrai mime type, tamanho e nome; o request retorna sem esperar
-- Configuração de `tries`, `timeout` e método `failed` para tratamento de falhas
 - Distinção conceitual: Event/Listener responde a "algo aconteceu"; Job é uma ordem direta de "faça isso"
 
 ### 8. File Storage & Filesystem Abstraction
