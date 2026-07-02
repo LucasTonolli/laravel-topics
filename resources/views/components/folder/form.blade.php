@@ -1,4 +1,7 @@
 <div>
+    @error('folder_limit')
+        <p class="mb-2 text-sm text-red-600">{{ $message }}</p>
+    @enderror
     <label for="name" class="block text-sm font-medium text-zinc-700">Nome da pasta</label>
     <input
         id="name"

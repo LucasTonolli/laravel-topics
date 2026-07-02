@@ -22,6 +22,6 @@ class EnsureFolderLimit
             return $next($request);
         }
 
-        return response()->json(['error' => 'You have reached the maximum number of folders.'], 403);
+        return back()->withErrors(['folder_limit' => 'Você atingiu o limite máximo de pastas permitidas.']);
     }
 }
